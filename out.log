@@ -1,0 +1,21 @@
+rm -rf elf/
+rm -rf bin/
+rm -rf bin-host/
+rm -rf obj/
+rm -rf testvectors/
+rm -rf benchmarks/
+mkdir -p elf
+arm-none-eabi-gcc -o elf/crypto_sign_dilithium2_opt_test.elf -Wall -Wextra -Wimplicit-function-declaration -Wredundant-decls -Wmissing-prototypes -Wstrict-prototypes -Wundef -Wshadow -I./libopencm3/include -fno-common -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -MD -DSTM32F4 -DCRYPTO_ITERATIONS=1 -O3 -DMUPQ_NAMESPACE= \
+	crypto_sign/test.c common/fips202.c common/sha2.c common/crypto_hashblocks_sha512.c common/aes-publicinputs.c common/aes.c common/keccakf1600.S common/aes-encrypt.S common/aes-publicinputs.S common/aes-keyschedule.S common/crypto_hashblocks_sha512_inner32.s common/randombytes.c crypto_sign/dilithium2/opt/polyvec.c crypto_sign/dilithium2/opt/sparsemult.c crypto_sign/dilithium2/opt/symmetric-shake.c crypto_sign/dilithium2/opt/poly.c crypto_sign/dilithium2/opt/sign.c crypto_sign/dilithium2/opt/packing.c crypto_sign/dilithium2/opt/smallpoly.c crypto_sign/dilithium2/opt/rounding.c crypto_sign/dilithium2/opt/rej.s crypto_sign/dilithium2/opt/pointwise_mont.s crypto_sign/dilithium2/opt/vector.s crypto_sign/dilithium2/opt/addsub.S crypto_sign/dilithium2/opt/ntt.S crypto_sign/dilithium2/opt/fnt_257.S crypto_sign/dilithium2/opt/basemul_257.S crypto_sign/dilithium2/opt/smallntt.S crypto_sign/dilithium2/opt/ntt_new.S crypto_sign/dilithium2/opt/ifnt_257.S crypto_sign/dilithium2/opt/sparse.S common/hal-stm32f4.c \
+	-Icrypto_sign/dilithium2/opt  -I"common" --static -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group -Tstm32f405x6_full.ld -nostartfiles -Wl,--gc-sections -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -L./libopencm3/lib -lm -lopencm3_stm32f4
+mkdir -p bin
+arm-none-eabi-objcopy -Obinary elf/crypto_sign_dilithium2_opt_test.elf bin/crypto_sign_dilithium2_opt_test.bin
+rm elf/crypto_sign_dilithium2_opt_test.elf
+st-flash 1.7.0-263-g8de2b4d
+file bin/crypto_sign_dilithium2_opt_test.bin md5 checksum: f4b7109487fd5565d1b83f6cf0ba1448, stlink checksum: 0x006f499d
+-> Flash page at 0x8000000 erased (size: 0x4000)
+-> Flash page at 0x8004000 erased (size: 0x4000)
+-> Flash page at 0x8008000 erased (size: 0x4000)
+-> Flash page at 0x800c000 erased (size: 0x4000)
+-> Flash page at 0x8010000 erased (size: 0x10000)
+

@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "smallntt.h": "c",
+        "sparsemult.h": "c",
+        "smallpoly.h": "c",
+        "rcc.h": "c"
+    }
+}
